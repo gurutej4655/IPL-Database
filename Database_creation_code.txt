@@ -1,0 +1,89 @@
+drop table team cascade constraints ; create table team
+(
+team_id varchar2(10), team_name varchar2(30), captain_id varchar2(10), main_sponsor_id varchar2(10), coach_id varchar2(10), max_runs int,
+home_ground varchar2(10), primary key(team_id)
+);
+
+/* Team */ 
+
+Drop table coach cascade constraints; 
+create table coach
+(
+coach_id varchar2(10), coach_name varchar2(30), coach_age int, 
+coach_loc varchar2(20), primary key(coach_id)
+);
+
+/*Coach*/
+
+drop table player cascade constraints; 
+create table player
+(
+player_id varchar2(10) , player_name varchar2(20), runs_scored int, wickets_taken int,
+team_id varchar2(10), primary key(player_id)
+);
+
+/*Player*/
+
+drop table sponsors cascade constraints; 
+create table sponsors
+(
+sponsor_id varchar2(10) , sponsor_name varchar(20), primary key(sponsor_id)
+);
+
+/*Sponsors*/
+
+drop table subsponsors cascade constraints; 
+create table subsponsors
+(
+subsponsor_id varchar(10), team_id varchar2(10),
+primary key(subsponsor_id,team_id)
+);
+
+/*Subsponsors*/
+
+drop table ground cascade constraints; 
+create table ground
+(
+ground_id varchar2(10), ground_name varchar2(50), ground_capacity int, ground_location varchar2(40), primary key(ground_id)
+);
+
+/*Ground*/
+
+drop table playoffs cascade constraints; 
+create table playoffs
+(
+match_name varchar2(20) , match_date date, ground_id varchar2(10), primary key(match_name)
+);
+
+/*Playoffs*/
+
+
+drop table playoffs_result cascade constraints; create table playoffs_result
+(
+match_name varchar2(20) , team_won varchar2(10), team_lost varchar2(10), primary key(match_name)
+);
+
+/*Playoffs result*/
+
+
+alter table team
+add constraint coach_id1 FOREIGN key (coach_id)REFERENCES coach(coach_id);
+
+alter table team
+add constraints captain_id1 foreign key(captain_id) references player(player_id);
+
+alter table team
+add constraints sponsor_id1 FOREIGN KEY(main_sponsor_id) REFERENCES sponsors(sponsor_id);
+
+alter table team
+add constraints ground_id2 FOREIGN KEY(home_ground) REFERENCES ground(ground_id);
+
+alter table player 
+add constraint team_id1 foreign key(team_id)REFERENCES team(team_id);
+
+alter table subsponsors
+add constraint subsponsor_id1 foreign key(subsponsor_id) references sponsors(sponsor_id);
+
+alter table subsponsors
+add constraint team_id2 foreign key(team_id) references team(team_id);
+
